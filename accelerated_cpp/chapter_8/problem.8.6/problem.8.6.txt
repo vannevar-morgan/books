@@ -1,0 +1,11 @@
+Accelerated C++, Chapter 8, Problem 6
+
+Question:
+Suppose that m has type map<int, string>, and that we encounter a call to copy(m.begin(), m.end(), back_inserter(x)).  What can we say about the type of x?  What if the call were copy(x.begin(), x.end(), back_inserter(m)) instead?
+
+
+
+Answer:
+For copy(m.begin(), m.end(), back_inserter(x)), x must be a container that supports back_inserter() of type pair<int, string>.
+
+For copy(x.begin(), x.end(), back_inserter(m)), this call isn't valid because map does not support back_inserter (map has no push_back() function).

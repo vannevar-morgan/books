@@ -1,0 +1,31 @@
+Accelerated C++, Problem 13-9
+
+Question:
+
+Describe what would happen if the assignment operator in 13.4.2/247 failed to check for self-assignment.
+
+Answer:
+
+Student_info& Student_info::operator= (const Student_info& s)
+{
+  if(&s != this){
+    delete cp;
+    if(s.cp){
+      cp = s.cp->clone();
+    }else{
+      cp = 0;
+    }
+  }
+  return *this;
+}
+
+If the assignment operator didn't check for self-assignment it would cause the program to enter undefined behaviour.
+
+It would:
+>delete the pointer to Core, cp
+>check s.cp which evaluates to true (if cp was not null) since delete doesn't change the value of a pointer
+>attempt to access the clone function on the deleted object pointed to by cp when it calls s.cp->clone()
+>?undefined behaviour?
+
+If cp was null then it would not enter undefined behaviour because s.cp would still evaluate as false, and deleting a null pointer would have no effect.
+

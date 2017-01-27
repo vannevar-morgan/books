@@ -1,0 +1,49 @@
+Accelerated C++, Chapter 6, Problems 3,4
+
+Question 6.3:
+
+What does the following code fragment do?
+     vector<int> u(10, 100);
+     vector<int> v;
+     copy(u.begin(), u.end(), v.begin());
+
+
+
+Answer:
+It's an error and will segfault.
+
+// problem.6.3, can't use v.begin() to copy into because v has no elements or memory allocated.  need to use std::back_inserter.
+std::vector<int> v;
+copy(u.begin(), u.end(), v.begin());
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+
+Question 6.4:
+
+Correct the program you wrote in the previous exercise to copy from u into v.  There are at least two possible ways to correct the program.  Implement both, and describe the relative advantages and disadvantages of each approach.
+
+
+
+Answer:
+
+// problem.6.4, use std::back_inserter to get an iterator to copy data to.
+copy(u.begin(), u.end(), std::back_inserter(v));
+
+
+Advantage: does not require pre-allocation.
+Advantage: more flexible.  we can use copy() with std::back_inserter() to append data to a container (including a container that does not support random access, e.g., a list, as long as the container supports std::back_inserter()).
+Disadvantage: because space is not pre-allocated, re-allocations during copying are likely to occur.
+
+-----------
+
+// problem.6.4, alternatively if we allocate space in the vector for all elements to be copied then we can use v.begin() as the destination iterator for std::copy()
+std::vector<int> v(u.size());
+copy(u.begin(), u.end(), v.begin());
+
+
+Advantage: can be used by containers that do not support std::back_inserter(), as long as the container provides a constructor constructor(n) which pre-allocates space for n elements.
+Advantage: because space is pre-allocated, copying to the container will not trigger a reallocation.
+Disadvantage: requires pre-allocating space to copy to, elements will be default initialized before being overwritten, unnecessary work.
+Disadvantage: less flexible.  say we want to copy 2 containers t and u into v.  we could preallocate space for elements from both containers and copy in elements from the first container, t.  to append the elements from the second container we would need to do copy(u.begin(), u.end(), v.begin() + t.size()).  This means v must support random access.  For example, v could not be a list container because list does not support random access.

@@ -1,0 +1,8 @@
+Accelerated C++, Chapter 4, Problem 8
+
+Question:
+If the following code is legal, what can we infer about the return type of f?
+   double d = f()[n];
+
+Answer:
+It implies that f() returns a type for which operator[] is defined; the return type is a collection of type double.

@@ -1,0 +1,6 @@
+baltimore
+seattle
+chattanooga
+boise
+los angeles
+denver

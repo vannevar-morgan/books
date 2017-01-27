@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>c++ - Custom iterator for a linked list class - Code Review Stack Exchange</title>
+    <link rel="shortcut icon" href="https://cdn.sstatic.net/Sites/codereview/img/favicon.ico?v=00b9e479193f">
+    <link rel="apple-touch-icon image_src" href="https://cdn.sstatic.net/Sites/codereview/img/apple-touch-icon.png?v=0a72875519a4%29">
+    <link rel="search" type="application/opensearchdescription+xml" title="Code Review Stack Exchange" href="https://codereview.stackexchange.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StackCodeReview">
+    <meta name="twitter:domain" content="codereview.stackexchange.com">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="https://cdn.sstatic.net/Sites/codereview/img/apple-touch-icon@2.png?v=a4f1c838ba2c">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="Custom iterator for a linked list class">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="I have made a LinkedList class. This is a singly-linked-list and I want to make a forward_iterator for this class without using Boost. I have made the code and I want to know whether I have impleme...">
+    <meta property="og:url" content="http://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class">
+    <link rel="canonical" href="http://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class">
+
+    
+    
+    <script async="" src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/quant.js"></script><script async="" src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/beacon.js"></script><script async="" src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/analytics.js"></script><script type="text/javascript" async="" src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/ados.js"></script><script src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/jquery.js"></script><style type="text/css">
+:root .ad-container
+{ display: none !important; }</style>
+    <script src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/stub.js"></script>
+    <link rel="stylesheet" type="text/css" href="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'Custom iterator for a linked list class'" href="https://codereview.stackexchange.com/feeds/question/74609">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        <script>
+        
+            StackExchange.ready(function () {
+                                    
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.initSnippetRenderer();
+                    });
+                    
+
+                StackExchange.using("postValidation", function () {
+                    StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+                });
+
+                
+                StackExchange.question.init({showAnswerHelp:true,totalCommentCount:0,shownCommentCount:0,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:74609});
+
+                styleCode();
+
+                    StackExchange.realtime.subscribeToQuestion('196', '74609');
+                                                                    StackExchange.using("gps", function () { StackExchange.gps.trackOutboundClicks('#content', '.post-text', false); });
+
+            });
+        </script>
+
+            <script>
+                StackExchange.ready(function () {
+                    try {
+                        if (!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGTransform)
+                            return;
+                    } catch (ex) {
+                        return;
+                    }
+                    var d = 100;
+                    $.ajax({url:"//cdn-prom.sstatic.net/WinterBash/js/qa-wb.js?v=8",cache:true,dataType:"script"}).done(function tryInit() {
+                        if (window.WinterBash) {
+                            WinterBash.core.init('winterbash2016.stackexchange.com', '//cdn-prom.sstatic.net/WinterBash/', '8');
+                        } else {
+                            if (d <= 800)
+                                setTimeout(tryInit, d);
+                            d *= 2;
+                        }
+                    });
+                });
+            </script>
+                <script type="text/x-mathjax-config">
+                    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+                                        tex2jax: { inlineMath: [ ["\\$", "\\$"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+                                        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                                        messageStyle: "none"
+                });
+                </script>        
+            <script src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/MathJax.js"></script>  
+
+    <script>
+        StackExchange.ready(function () {
+                        StackExchange.realtime.init('wss://qa.sockets.stackexchange.com,ws://qa.sockets.stackexchange.com');
+            StackExchange.realtime.subscribeToReputationNotifications('196');
+                StackExchange.realtime.subscribeToTopBarNotifications('196');
+        });
+    </script>
+    <script>
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","networkMetaHostname":"meta.stackexchange.com","serverTime":1482279194,"routeName":"Questions/Show","site":{"name":"Code Review Stack Exchange","description":"Q&A for peer programmer code reviews","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdsB7sSAAAAAAzjgEF_Hd8vXv-C42sa_KyofaGR","recaptchaAudioLang":"en","enableNewTagCreationWarning":false,"insertSpaceAfterNameTabCompletion":false,"id":196,"enableInsertDocLinkDialog":false,"enableSocialMediaInSharePopup":true},"user":{"fkey":"a9f9389a77575cff1a2051226ebd92bc","rep":0,"isAnonymous":true,"isAnonymousNetworkWide":true,"ab":{"question_page_hero":{"v":"delay_hero","g":2}}},"realtime":{"newest":true,"active":true,"tagged":true,"staleDisconnectIntervalInHours":0,"workerIframeDomain":"https://cdn.sstatic.net"},"events":{"postType":{"question":1},"postEditionSection":{"title":1,"body":2,"tags":3}},"story":{"minCompleteBodyLength":75}}, {"site":{"allowImageUploads":true,"enableUserHovercards":true,"styleCode":true,"enableImgurHttps":true},"comments":{},"tags":{},"accounts":{"currentPasswordRequiredForChangingStackIdPassword":true},"flags":{"allowRetractingFlags":true},"analytics":{"clientTimingsAbsoluteTimeout":30000,"clientTimingsDebounceTimeout":1000},"snippets":{"snippetsEnabled":true,"renderDomain":"stacksnippets.net"},"markdown":{"asteriskIntraWordEmphasis":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"19d520f360c0","js/moderator.en.js":"805ab790ba7c","js/full-anon.en.js":"9ffb9227b62a","js/full.en.js":"f56e28d0c9ab","js/wmd.en.js":"63cdb80bd50d","js/third-party/jquery.autocomplete.min.js":"d3b8fa7fdf74","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"fe991ef15fc0","js/help.en.js":"91e5bd149e1f","js/tageditor.en.js":"6411a03f27b9","js/tageditornew.en.js":"a848c2d46a96","js/inline-tag-editing.en.js":"77dde44800e2","js/revisions.en.js":"47de10a8358f","js/review.en.js":"4cccd524ca3e","js/tagsuggestions.en.js":"d1ff9b84abe5","js/post-validation.en.js":"df9c64db5b70","js/explore-qlist.en.js":"e71f14781288","js/events.en.js":"30422f52b2ee","js/keyboard-shortcuts.en.js":"c2ceba350ac2","js/external-editor.en.js":"235e80f649d7","js/mathjax-editing.en.js":"c63ce8227ce6","js/external-editor.en.js":"235e80f649d7","js/snippet-javascript.en.js":"ac9f2edce3a3","js/snippet-javascript-codemirror.en.js":"f3275b1c51e3"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+        <script>
+            StackExchange.ready(function () {
+                $('#nav-tour').click(function () {
+                    StackExchange.using("gps", function() {
+                        StackExchange.gps.track("aboutpage.click", { aboutclick_location: "headermain" }, true);
+                    });
+                });
+            });
+        </script>
+<style type="text/css">
+:root #header + #content > #left > #rlblock_left,
+:root #content > #center > .dose > .dosesingle,
+:root #content > #right > .dose > .dosesingle
+{ display: none !important; }</style></head>
+<body class="question-page new-topbar">
+    <noscript><div id="noscript-padding"></div></noscript>
+            <script>(function () { var old = $.fn.contents; $.fn.contents = function () { try { return old.apply(this, arguments); } catch (e) { return $([]); } } })()</script>
+        <iframe id="adzerk-user-match" scrolling="no" onload="window.AUMIframeDone=true" src="https://ssum-sec.casalemedia.com/usermatch?s=183712&amp;cb=https%3A%2F%2Fengine.adzerk.net%2Fudb%2F22%2Fsync%2Fi.gif%3FpartnerId%3D1%26userId%3D" style="display: none ! important;" marginheight="0" marginwidth="0" width="0" hidden="" height="0" frameborder="0"></iframe>
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+    <div class="topbar-dialog siteSwitcher-dialog dno">
+        <div class="header">
+            <h3><a href="https://codereview.stackexchange.com/">current community</a>
+            </h3>
+        </div>
+        <div class="modal-content current-site-container">
+            <ul class="current-site">
+                    <li>
+                            <div class="related-links">
+                    <a href="http://chat.stackexchange.com/?tab=site&amp;host=codereview.stackexchange.com" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+
+
+
+    <a href="https://codereview.stackexchange.com/" class="current-site-link site-link js-gps-track" data-id="196" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-codereview" title="Code Review"></div>
+        Code Review
+    </a>
+
+                    </li>
+                    <li class="related-site">
+                            <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                        
+
+
+
+    <a href="http://meta.codereview.stackexchange.com/" class="site-link js-gps-track" data-id="198" data-gps-track="
+            site.switch({ target_site:198, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-codereviewmeta" title="Code Review Meta"></div>
+        Code Review Meta
+    </a>
+
+                    </li>
+            </ul>
+        </div>
+
+        <div class="header" id="your-communities-header">
+            <h3>
+your communities            </h3>
+
+        </div>
+        <div class="modal-content" id="your-communities-section">
+
+                <div class="call-to-login">
+<a href="https://codereview.stackexchange.com/users/signup?ssrc=site_switcher&amp;returnurl=https%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://codereview.stackexchange.com/users/login?ssrc=site_switcher&amp;returnurl=https%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+                </div>
+        </div>
+
+        <div class="header">
+            <h3><a href="https://stackexchange.com/sites">more stack exchange communities</a>
+            </h3>
+            <a href="http://stackoverflow.blog/" class="fr">company blog</a>
+        </div>
+        <div class="modal-content">
+                <div class="child-content"></div>
+        </div>        
+    </div>
+        </div>
+
+        <div class="network-items">
+                <a href="https://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 162 Stack Exchange sites">
+                    <span class="hidden-text">Stack Exchange</span>
+                </a>
+
+    <a href="#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#" class="topbar-icon icon-achievements yes-hover js-achievements-button " data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://codereview.stackexchange.com/users/signup?ssrc=head&amp;returnurl=https%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class" class="login-link" rel="nofollow">sign up</a>
+                                <a href="https://codereview.stackexchange.com/users/login?ssrc=head&amp;returnurl=https%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class" class="login-link" rel="nofollow">log in</a>
+
+                            <a href="https://codereview.stackexchange.com/tour">tour</a>
+        <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+            help
+            <span class="triangle"></span>
+        </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="https://codereview.stackexchange.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="https://codereview.stackexchange.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="https://meta.codereview.stackexchange.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.stackoverflowbusiness.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+                                            </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                        <input name="q" placeholder="Search Q&amp;A" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        StackExchange.ready(function() { StackExchange.topbar.init(); });
+    </script>
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="https://codereview.stackexchange.com/">
+                    Code Review
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                            <li class="youarehere">
+        <a id="nav-questions" href="https://codereview.stackexchange.com/questions" class="js-gps-track" data-gps-track="top_nav.click({is_current:true, location:3, destination:1})">
+        Questions
+        </a>
+    </li>
+
+                                                    <li>
+        <a id="nav-tags" href="https://codereview.stackexchange.com/tags" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:2})">
+        Tags
+        </a>
+    </li>
+
+                            <li>
+        <a id="nav-users" href="https://codereview.stackexchange.com/users" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:3})">
+        Users
+        </a>
+    </li>
+
+                            <li>
+        <a id="nav-badges" href="https://codereview.stackexchange.com/help/badges" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:4})">
+        Badges
+        </a>
+    </li>
+
+    <li>
+        <a id="nav-unanswered" href="https://codereview.stackexchange.com/unanswered" class="js-gps-track" data-gps-track="top_nav.click({is_current:false, location:3, destination:5})">
+        Unanswered
+        </a>
+    </li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="https://codereview.stackexchange.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content" class="snippet-hidden">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/apple-touch-icon.png">
+			<div id="question-header">
+                <h1 itemprop="name"><a href="https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class" class="question-hyperlink">Custom iterator for a linked list class</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="74609" id="question">
+
+    <script>
+                var ados = ados || {}; ados.run = ados.run || [];
+                ados.run.push(function () { ados_add_placement(22,0,"adzerk1833739447",4).enableDynamicSiteSelection().setZone(29); });
+            </script>
+            <div class="everyonelovesstackoverflow" id="adzerk1833739447"></div>    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="74609" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">8</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>4</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>I have made a <code>LinkedList</code> class. This is a singly-linked-list and I want to make a <code>forward_iterator</code>
+ for this class without using Boost. I have made the code and I want to 
+know whether I have implemented it correctly. The source I referred to 
+make this code is <a href="http://www.cplusplus.com/reference/iterator/iterator/">here</a>.</p>
+
+<pre><code>template &lt;class T&gt;
+struct node
+{
+    T data;
+    node *next;
+};
+
+template &lt;class T&gt;
+class LinkedList
+{
+    private :
+    node&lt;T&gt; *start;
+    unsigned int numElements;
+    // Assume all functions are implemented
+};
+</code></pre>
+
+<p>Iterator Code :</p>
+
+<pre><code>class iterator : public std::iterator&lt;std::forward_iterator_tag,node&lt;T&gt;*&gt;
+{
+    node&lt;T&gt;* itr;
+
+    public :
+
+    iterator (node&lt;T&gt;* temp) : itr(temp) {}
+    iterator (const iterator&amp; myitr) : itr(myitr.itr) {}
+    iterator&amp; operator++ 
+    {
+        itr = itr-&gt;next;
+        return *this;
+
+    }
+    bool operator== (const iterator&amp; rhs) 
+    {
+        return itr == rhs.itr;
+
+    }
+    bool operator!= (const iterator&amp; rhs) 
+    {
+        return itr != rhs.itr;
+
+    }
+    T&amp; operator*()
+    {
+        return itr-&gt;data;
+    }
+
+};
+</code></pre>
+
+<p>Is the above implementation correct? If not, then what changes should I make?  Also, does anything else need to be implemented?</p>
+    </div>
+    <div class="post-taglist">
+        <a href="https://codereview.stackexchange.com/questions/tagged/c%2b%2b" class="post-tag" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="https://codereview.stackexchange.com/questions/tagged/linked-list" class="post-tag" title="show questions tagged 'linked-list'" rel="tag">linked-list</a> <a href="https://codereview.stackexchange.com/questions/tagged/iterator" class="post-tag" title="show questions tagged 'iterator'" rel="tag">iterator</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="https://codereview.stackexchange.com/q/74609" title="short permalink to this question" class="short-link" id="link-post-74609">share</a><span class="lsep">|</span><a href="https://codereview.stackexchange.com/posts/74609/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature" align="right">
+<div class="user-info user-hover">
+    <div class="user-action-time">
+        <a href="https://codereview.stackexchange.com/posts/74609/revisions" title="show all edits to this post">edited <span title="2014-12-23 16:31:31Z" class="relativetime">Dec 23 '14 at 16:31</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://codereview.stackexchange.com/users/22222/jamal"><div class="gravatar-wrapper-32"><img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/LI1za.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://codereview.stackexchange.com/users/22222/jamal">Jamal</a><span class="mod-flair" title="moderator">♦</span>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 28,806" dir="ltr">28.8k</span><span title="10 gold badges"><span class="badge1"></span><span class="badgecount">10</span></span><span title="108 silver badges"><span class="badge2"></span><span class="badgecount">108</span></span><span title="218 bronze badges"><span class="badge3"></span><span class="badgecount">218</span></span>
+        </div>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2014-12-23 08:47:00Z" class="relativetime">Dec 23 '14 at 8:47</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://codereview.stackexchange.com/users/61711/prp"><div class="gravatar-wrapper-32"><img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/F7Hw5.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://codereview.stackexchange.com/users/61711/prp">PRP</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">143</span><span title="1 gold badge"><span class="badge1"></span><span class="badgecount">1</span></span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="4 bronze badges"><span class="badge3"></span><span class="badgecount">4</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                    
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-74609" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-74609" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								2 Answers
+                                <span style="display:none;" itemprop="answerCount">2</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active" data-shortcut="A">
+            active</a>
+        <a href="https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest" data-shortcut="O">
+            oldest</a>
+        <a class="youarehere" href="https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes" data-shortcut="V">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="74647"></a>
+<div id="answer-74647" class="answer accepted-answer" data-answerid="74647" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="74647" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">13</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>Your iterator is missing a few important details:</p>
+
+<ul>
+<li><p>You should provide the pre- and post-increment operators (<code>++it</code> and <code>it++</code>). Currently, you only have the pre-increment version.</p></li>
+<li><p>It might also be good to provide the <code>-&gt;</code> operator, since some people prefer the <code>it-&gt;something</code> syntax over the <code>(*it).something</code> one.</p></li>
+<li><p>The comparison and dereference operators should be <code>const</code>. Remember <a href="http://www.cprogramming.com/tutorial/const_correctness.html" rel="nofollow">Const Correctness</a>.</p></li>
+<li><p>The copy constructor is just performing a memberwise copy of the 
+underlying data, so you don't need to provide one and can let the 
+compiler default it.</p></li>
+<li><p>The Standard Library containers always provide two flavors of iterators, the <code>iterator</code> type, pointing to mutable data, and the <code>const_iterator</code>
+ type, pointing to immutable data. It is easy to adapt your class to 
+support both by providing a conversion operator and inheriting from <code>std::iterator</code> (see the following example).</p></li>
+<li><p>Decide which course of action should be taken when incrementing and dereferencing an invalid iterator. E.g.: <code>list.end()++;</code>.
+ Should it trigger an assertion? Throw an exception? Do nothing as it is
+ now? I would at least assert to help the debugging process. You might 
+find exceptions more appropriate in your context.</p></li>
+</ul>
+
+<h3>The above points applied to your code:</h3>
+
+<pre><code>#include &lt;cassert&gt;      // assert
+#include &lt;cstddef&gt;      // ptrdiff_t
+#include &lt;iterator&gt;     // iterator
+#include &lt;type_traits&gt;  // remove_cv
+#include &lt;utility&gt;      // swap
+
+template
+&lt;
+    class Type,
+    class UnqualifiedType = std::remove_cv_t&lt;Type&gt;
+&gt;
+class ForwardIterator 
+    : public std::iterator&lt;std::forward_iterator_tag,
+                           UnqualifiedType,
+                           std::ptrdiff_t,
+                           Type*,
+                           Type&amp;&gt;
+{
+    node&lt;UnqualifiedType&gt;* itr;
+
+    explicit ForwardIterator(node&lt;UnqualifiedType&gt;* nd) 
+        : itr(nd) 
+    { 
+    }
+
+public:
+
+    ForwardIterator()   // Default construct gives end.
+        : itr(nullptr) 
+    { 
+    }
+
+    void swap(ForwardIterator&amp; other) noexcept
+    {
+        using std::swap;
+        swap(itr, other.iter);
+    }
+
+    ForwardIterator&amp; operator++ () // Pre-increment
+    {
+        assert(itr != nullptr &amp;&amp; "Out-of-bounds iterator increment!");
+        itr = itr-&gt;next;
+        return *this;
+    }
+
+    ForwardIterator operator++ (int) // Post-increment
+    {
+        assert(itr != nullptr &amp;&amp; "Out-of-bounds iterator increment!");
+        ForwardIterator tmp(*this);
+        itr = itr-&gt;next;
+        return tmp; 
+    }
+
+    // two-way comparison: v.begin() == v.cbegin() and vice versa
+    template&lt;class OtherType&gt;
+    bool operator == (const ForwardIterator&lt;OtherType&gt;&amp; rhs) const
+    {
+        return itr == rhs.itr;
+    }
+
+    template&lt;class OtherType&gt;
+    bool operator != (const ForwardIterator&lt;OtherType&gt;&amp; rhs) const
+    {
+        return itr != rhs.itr;
+    }
+
+    Type&amp; operator* () const
+    {
+        assert(itr != nullptr &amp;&amp; "Invalid iterator dereference!");
+        return itr-&gt;data;
+    }
+
+    Type&amp; operator-&gt; () const
+    {
+        assert(itr != nullptr &amp;&amp; "Invalid iterator dereference!");
+        return itr-&gt;data;
+    }
+
+    // One way conversion: iterator -&gt; const_iterator
+    operator ForwardIterator&lt;const Type&gt;() const
+    {
+        return ForwardIterator&lt;const Type&gt;(itr);
+    }
+};
+
+// `iterator` and `const_iterator` used by your class:
+typedef ForwardIterator&lt;T&gt; iterator;
+typedef ForwardIterator&lt;const T&gt; const_iterator;
+</code></pre>
+
+<p>Note: In the example, I've assumed that the end of your list or an 
+invalid iterator are marked by a null pointer. You'll need to change 
+that if you are using some other method, such as a dummy sentry node.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="https://codereview.stackexchange.com/a/74647" title="short permalink to this answer" class="short-link" id="link-post-74647">share</a><span class="lsep">|</span><a href="https://codereview.stackexchange.com/posts/74647/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="https://codereview.stackexchange.com/posts/74647/revisions" title="show all edits to this post">edited <span title="2016-01-20 17:19:55Z" class="relativetime">Jan 20 at 17:19</span></a>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://codereview.stackexchange.com/users/75307/toby-speight"><div class="gravatar-wrapper-32"><img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/504af892a114ea39f2a8872f8c44d964.png" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://codereview.stackexchange.com/users/75307/toby-speight">Toby Speight</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">815</span><span title="2 silver badges"><span class="badge2"></span><span class="badgecount">2</span></span><span title="15 bronze badges"><span class="badge3"></span><span class="badgecount">15</span></span>
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info user-hover">
+    <div class="user-action-time">
+        answered <span title="2014-12-23 17:04:02Z" class="relativetime">Dec 23 '14 at 17:04</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://codereview.stackexchange.com/users/39810/glampert"><div class="gravatar-wrapper-32"><img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/qSCuX.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://codereview.stackexchange.com/users/39810/glampert">glampert</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 14,688" dir="ltr">14.7k</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="15 silver badges"><span class="badge2"></span><span class="badgecount">15</span></span><span title="70 bronze badges"><span class="badge3"></span><span class="badgecount">70</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-74647" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-74647" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+<div class="newsletter-anon">
+    <img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/apple-touch-icon.png" class="newsletter-logo">
+    <div class="newsletter-container">
+        <h2>Did you find this question interesting? Try our newsletter</h2>
+        <p class="newsletter-description">
+            Sign up for our newsletter and get our top new questions delivered to your inbox (<a href="http://stackexchange.com/newsletters/newsletter?site=codereview.stackexchange.com" id="newsletter-preview">see an example</a>).
+        </p>
+        <form id="anon-newsletter-form" data-error="There was a problem signing up for the newsletter. Please try again later.">
+            <input id="newsletter-email-input" placeholder="email address" title="your email address" type="email">
+            <input value="Subscribe" id="newsletter-email-submit" type="submit">
+        </form>
+        <div style="margin-top: 10px; float:right;" class="dno cbt newsletter-status-confirmed">
+            <b>Subscribed!</b>
+        </div>
+        <div style="margin-top: 10px; float:right;" class="dno cbt newsletter-status-unconfirmed">
+            <b>Success!</b> Please click the link in the confirmation email to activate your subscription.
+        </div>
+    </div>
+</div>
+
+<script>
+    StackExchange.ready(function () {
+        StackExchange.newsletterAd.init();
+    });
+
+    $('#anon-newsletter-form').submit(function () {
+        var $form = $(this);
+        var $input = $form.find('#newsletter-email-input');
+        var $submit = $form.find('#newsletter-email-submit');
+        var $container = $form.closest('.newsletter-container');
+
+        var email = $.trim($input.val());
+        if (email.length == 0) {
+            return false;
+        }
+        StackExchange.helpers.addSpinner($form);
+
+        $.ajax({
+            url: '/newsletter/signup/anon',
+            type: 'POST',
+            dataType: 'json',
+            data: { fkey: StackExchange.options.user.fkey, email: email, viaAnonNewsletterAd: true },
+            success: function (data) {
+                if (!data.error && (data.status == 'confirmed' || data.status == 'unconfirmed')) {
+                    $input.attr('disabled', true);
+                    $submit.remove();
+                    $container.find('.newsletter-status-' + data.status).show();
+                }
+                else {
+                    $container.showErrorMessage(data.error || $form.data('error'));
+                }
+            },
+            error: function () {
+                $container.showErrorMessage($form.data('error'));
+            },
+            complete: function () {
+                StackExchange.helpers.removeSpinner($form);
+            }
+        });
+
+        return false;
+    });
+</script>
+
+  
+<a name="74650"></a>
+<div id="answer-74650" class="answer" data-answerid="74650" itemscope="" itemtype="http://schema.org/Answer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="74650" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">6</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>The requirements for a forward iterator are:</p>
+
+<ul>
+<li><a href="http://www.sgi.com/tech/stl/ForwardIterator.html">Forward Iterator</a></li>
+</ul>
+
+<p>It is a refinement of:</p>
+
+<ul>
+<li><a href="http://www.sgi.com/tech/stl/InputIterator.html">Input Iterator</a></li>
+<li><a href="http://www.sgi.com/tech/stl/OutputIterator.html">Output Iterator</a></li>
+<li><a href="http://www.sgi.com/tech/stl/trivial.html">Trivial Iterator</a></li>
+<li><a href="http://www.sgi.com/tech/stl/EqualityComparable.html">Equity Comparable</a></li>
+<li><a href="http://www.sgi.com/tech/stl/DefaultConstructible.html">Default Constructable</a></li>
+<li><a href="http://www.sgi.com/tech/stl/Assignable.html">Assignable</a></li>
+</ul>
+
+<p>If you read through all those specs you must define these:</p>
+
+<ul>
+<li>Preincrement</li>
+<li>Postincrement</li>
+<li>Dereference (Read/Write)</li>
+<li>Default Constructable</li>
+<li>Copy Constructable</li>
+<li>Assignment operator</li>
+<li>swap</li>
+<li>Postincrement and de-reference</li>
+<li>Postincrement and assignment</li>
+<li>Member accesses (-&gt; when de-referencing returns an object with members).</li>
+<li>Comparable with == and !=</li>
+</ul>
+
+<p>You must also define these types:</p>
+
+<ul>
+<li>Value type </li>
+<li>Distance type</li>
+</ul>
+
+<p>You are missing:</p>
+
+<ul>
+<li>The types.</li>
+<li>Postincrement</li>
+<li>Default Constructable (This gives you the equivalent of end of any list).</li>
+<li>swap</li>
+<li>Member accesses (-&gt; when de-referencing returns an object with members).</li>
+</ul>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="https://codereview.stackexchange.com/a/74650" title="short permalink to this answer" class="short-link" id="link-post-74650">share</a><span class="lsep">|</span><a href="https://codereview.stackexchange.com/posts/74650/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="https://codereview.stackexchange.com/posts/74650/revisions" title="show all edits to this post">edited <span title="2014-12-23 17:42:47Z" class="relativetime">Dec 23 '14 at 17:42</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+            
+
+
+    <td class="post-signature" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2014-12-23 17:36:27Z" class="relativetime">Dec 23 '14 at 17:36</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="https://codereview.stackexchange.com/users/507/loki-astari"><div class="gravatar-wrapper-32"><img src="c++%20-%20Custom%20iterator%20for%20a%20linked%20list%20class%20-%20Code%20Review%20Stack%20Exchange_files/yaNYe.jpg" alt="" width="32" height="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="https://codereview.stackexchange.com/users/507/loki-astari">Loki Astari</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score 53,038" dir="ltr">53k</span><span title="2 gold badges"><span class="badge1"></span><span class="badgecount">2</span></span><span title="59 silver badges"><span class="badge2"></span><span class="badgecount">59</span></span><span title="174 bronze badges"><span class="badge3"></span><span class="badgecount">174</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-74650" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-74650" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/74609/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="74609" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+        <script>
+            StackExchange.ifUsing("editor", function () {
+                return StackExchange.using("mathjaxEditing", function () {
+                    StackExchange.MarkdownEditor.creationCallbacks.add(function (editor, postfix) {
+                        StackExchange.mathjaxEditing.prepareWmdForMathJax(editor, postfix, [["\\$", "\\$"]]);
+                    });
+                });
+            }, "mathjax-editing");
+        </script>
+
+            <script>
+            StackExchange.ifUsing("editor", function () {
+                StackExchange.using("externalEditor", function () {
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.init();
+                    });
+                });
+            }, "code-snippets");
+        </script>
+    
+
+<script>
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+       
+        StackExchange.using("externalEditor", function() {
+                // Have to fire editor after snippets, if snippets enabled
+                if (StackExchange.settings.snippets.snippetsEnabled) {
+                    StackExchange.using("snippets", function() {
+                        createEditor();
+                    });
+                }
+                else {
+                    createEditor();
+                }
+            });
+
+            function createEditor() {
+                prepareEditor({
+                    heartbeatType: 'answer',
+                convertImagesToLinks: false,
+                reputationToPostImages: null,
+                bindNavPrevention: true,
+                postfix: "",
+                    onDemand: true,
+                    discardSelector: ".discard-answer"
+                    ,immediatelyShowMarkdownHelp:true
+                    });
+                
+
+        }
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="a9f9389a77575cff1a2051226ebd92bc" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								            <div class="form-item dno new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="https://codereview.stackexchange.com/users/login?ssrc=question_page&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class%23new-answer">log in</a></h3>
+                        <script>
+                            StackExchange.ready(function () {
+                                StackExchange.helpers.onClickDraftSave('#login-link');
+                            });
+                        </script>
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                StackExchange.ready(
+                    function () {
+                        StackExchange.openid.initPostLogin('.new-post-login', 'http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f74609%2fcustom-iterator-for-a-linked-list-class%23new-answer', 'question_page');
+                    }
+                );
+            </script>
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" size="30" maxlength="100" value="" tabindex="106" placeholder="required, but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="btn-clear discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="https://codereview.stackexchange.com/questions/tagged/c%2b%2b" class="post-tag" title="show questions tagged 'c++'" rel="tag">c++</a> <a href="https://codereview.stackexchange.com/questions/tagged/linked-list" class="post-tag" title="show questions tagged 'linked-list'" rel="tag">linked-list</a> <a href="https://codereview.stackexchange.com/questions/tagged/iterator" class="post-tag" title="show questions tagged 'iterator'" rel="tag">iterator</a>  or <a href="https://codereview.stackexchange.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2014-12-23 08:47:00Z"><b>1 year ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>15468 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="https://codereview.stackexchange.com/questions/74609/custom-iterator-for-a-linked-list-class?lastactivity" class="lastactivity-link" title="2016-01-20 17:19:55Z">11 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+			<div class="module community-bulletin" data-tracker="cb=1">
+    <div class="related">
+                <div class="bulletin-title">
+                    Blog
+                </div>
+                <hr>
+    <div class="spacer">
+        <div class="bulletin-item-type">
+                <a href="http://stackoverflow.blog/2016/12/Developers-webmasters-and-ninjas-whats-in-a-job-title/" class="question-hyperlink">
+<div class="favicon favicon-stackexchangemeta" title="Meta Stack Exchange"></div>                </a>
+            </div>
+                <div class="bulletin-item-content">
+                    <a href="http://stackoverflow.blog/2016/12/Developers-webmasters-and-ninjas-whats-in-a-job-title/" class="question-hyperlink">Developers, webmasters, and ninjas: what's in a job title?</a>
+                </div>
+                <br class="cbt">
+            </div>
+    <div class="spacer">
+        <div class="bulletin-item-type">
+                <a href="http://stackoverflow.blog/2016/12/Stack-Overflow-Podcast-97-Where-did-you-get-that-hat/" class="question-hyperlink">
+<div class="favicon favicon-stackexchangemeta" title="Meta Stack Exchange"></div>                </a>
+            </div>
+                <div class="bulletin-item-content">
+                    <a href="http://stackoverflow.blog/2016/12/Stack-Overflow-Podcast-97-Where-did-you-get-that-hat/" class="question-hyperlink">Stack Overflow Podcast #97 - Where did you get that hat?!</a>
+                </div>
+                <br class="cbt">
+            </div>
+    </div>
+</div>			
+			<script>
+                var ados = ados || {}; ados.run = ados.run || [];
+                ados.run.push(function () { ados_add_placement(22,0,"adzerk469509017",[5,17]).enableDynamicSiteSelection().setZone(56016); });
+            </script>
+            <div class="everyonelovesstackoverflow" id="adzerk469509017"></div>
+			
+
+            <div class="module sidebar-linked">
+	<h4 id="h-linked">Linked</h4>
+	<div class="linked" data-tracker="lq=1">
+
+<div class="spacer">
+	<a href="https://codereview.stackexchange.com/q/113081" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">5</div>
+	</a>
+	<a href="https://codereview.stackexchange.com/questions/113081/static-array-wrapper-with-iterators?noredirect=1" class="question-hyperlink">Static array wrapper with iterators</a>
+</div>
+<div class="spacer">
+	<a href="https://codereview.stackexchange.com/q/107375" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes  default">1</div>
+	</a>
+	<a href="https://codereview.stackexchange.com/questions/107375/merging-two-sorted-linked-lists-c?noredirect=1" class="question-hyperlink">Merging two sorted linked lists C++</a>
+</div>
+<div class="spacer">
+	<a href="https://codereview.stackexchange.com/q/79481" title="Vote score (upvotes - downvotes)">
+		<div class="answer-votes answered-accepted default">3</div>
+	</a>
+	<a href="https://codereview.stackexchange.com/questions/79481/wrapping-winapi-findnextvolume-as-std-iterator?noredirect=1" class="question-hyperlink">Wrapping WinAPI FindNextVolume as std iterator</a>
+</div>			</div>
+</div>
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer"><a href="https://codereview.stackexchange.com/q/30410" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">2</div></a><a href="https://codereview.stackexchange.com/questions/30410/custom-linked-list-class" class="question-hyperlink">Custom linked list class</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/40922" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">2</div></a><a href="https://codereview.stackexchange.com/questions/40922/creating-linked-list-data-with-iterator-pattern" class="question-hyperlink">Creating linked list data with iterator pattern</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/41655" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">7</div></a><a href="https://codereview.stackexchange.com/questions/41655/iterator-class-using-a-square-list" class="question-hyperlink">Iterator class using a square list</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/55834" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">7</div></a><a href="https://codereview.stackexchange.com/questions/55834/linked-list-with-iterators" class="question-hyperlink">Linked list with iterators</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/66938" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">8</div></a><a href="https://codereview.stackexchange.com/questions/66938/self-made-linked-list-iterator" class="question-hyperlink">Self-made linked list iterator</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/67131" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">5</div></a><a href="https://codereview.stackexchange.com/questions/67131/custom-linked-list-implementing-iterable-used-as-stack" class="question-hyperlink">Custom linked list implementing Iterable used as stack</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/86593" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">5</div></a><a href="https://codereview.stackexchange.com/questions/86593/doubly-linked-list-iterator-pointer-arithmetic" class="question-hyperlink">Doubly linked list: iterator/pointer arithmetic</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/112235" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">3</div></a><a href="https://codereview.stackexchange.com/questions/112235/singly-linked-list-implementation-with-iterators" class="question-hyperlink">Singly-linked list implementation with iterators</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/125837" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">5</div></a><a href="https://codereview.stackexchange.com/questions/125837/single-linked-list-implementation-in-c" class="question-hyperlink">Single Linked-List Implementation in C++</a></div><div class="spacer"><a href="https://codereview.stackexchange.com/q/146586" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">5</div></a><a href="https://codereview.stackexchange.com/questions/146586/an-attempt-to-make-a-linked-list-iterator-safe" class="question-hyperlink">An attempt to make a linked list iterator “safe”</a></div>
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="https://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-webmasters" title="Webmasters Stack Exchange"></div><a href="http://webmasters.stackexchange.com/questions/102172/will-putting-a-clock-display-on-a-website-boost-seo" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:45 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Will putting a clock display on a website boost SEO?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="http://puzzling.stackexchange.com/questions/46920/a-christmas-rebus" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    A Christmas rebus
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-dsp" title="Signal Processing Stack Exchange"></div><a href="http://dsp.stackexchange.com/questions/36399/which-order-to-perform-downsampling-and-filtering" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:295 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Which order to perform downsampling and filtering?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-codegolf" title="Programming Puzzles &amp; Code Golf Stack Exchange"></div><a href="http://codegolf.stackexchange.com/questions/103822/output-the-sign" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:200 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Output the sign
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/145870/is-there-a-risk-connecting-to-pop3-or-smtp-email-server-without-secure-connectio" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is there a risk connecting to POP3 or SMTP email server without secure connection?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/84684/whats-the-right-answer-to-check-savings-or-credit-for-an-overseas-card-in-au" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What's the right answer to "Check, Savings or Credit" for an overseas card in Australia?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-physics" title="Physics Stack Exchange"></div><a href="http://physics.stackexchange.com/questions/299608/is-it-possible-to-send-all-nuclear-waste-on-earth-to-the-sun" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:151 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Is it possible to send all nuclear waste on Earth to the Sun?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/65323/how-would-people-living-in-eternal-day-learn-that-stars-exist" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How would people living in eternal day learn that stars exist?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-ell" title="English Language Learners Stack Exchange"></div><a href="http://ell.stackexchange.com/questions/112948/does-excuse-him-make-sense" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:481 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Does "Excuse him." make sense?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-gardening" title="Gardening &amp; Landscaping Stack Exchange"></div><a href="http://gardening.stackexchange.com/questions/30272/how-can-i-strengthen-a-lawn-verge" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:269 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How can I strengthen a lawn/verge?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/145812/why-cant-a-hacker-just-obtain-a-new-ssl-certificate-for-your-website" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why can't a hacker just obtain a new SSL certificate for your website?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-politics" title="Politics Stack Exchange"></div><a href="http://politics.stackexchange.com/questions/14069/why-is-first-past-the-post-used-in-so-many-countries" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:475 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is First past the post used in so many countries?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-latin" title="Latin Language Stack Exchange"></div><a href="http://latin.stackexchange.com/questions/2209/word-for-fumo-but-less-thick-thin-smoke" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:644 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Word for "fumo" but less thick, thin smoke
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-mechanics" title="Motor Vehicle Maintenance &amp; Repair Stack Exchange"></div><a href="http://mechanics.stackexchange.com/questions/39997/does-putting-down-the-visors-help-defogging-the-windshield" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:224 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Does putting down the visors help defogging the windshield?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-codegolf" title="Programming Puzzles &amp; Code Golf Stack Exchange"></div><a href="http://codegolf.stackexchange.com/questions/103973/an-array-of-challenges-2-separate-a-nested-array" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:200 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    An Array of Challenges #2: Separate a Nested Array
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/81773/what-does-hr-do-for-me" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What does HR do for me?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-gamedev" title="Game Development Stack Exchange"></div><a href="http://gamedev.stackexchange.com/questions/134658/expected-numbers-for-user-engagement" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:53 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Expected numbers for user engagement
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/41246164/what-exactly-is-f-f-in-javascript" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What exactly is f =&gt; f in JavaScript?
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-electronics" title="Electrical Engineering Stack Exchange"></div><a href="http://electronics.stackexchange.com/questions/275932/solutions-for-holding-oscilloscope-probes-and-freeing-up-hands" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:135 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Solutions for holding oscilloscope probes (and freeing up hands)
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="http://tex.stackexchange.com/questions/344962/text-caption-constricted-to-table-width" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Text caption constricted to table width
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-tex" title="TeX - LaTeX Stack Exchange"></div><a href="http://tex.stackexchange.com/questions/344934/amsart-title-whitespace-problem" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:85 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Amsart Title Whitespace Problem
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-academia" title="Academia Stack Exchange"></div><a href="http://academia.stackexchange.com/questions/81581/writing-a-recommendation-letter-for-a-student-i-reported-for-academic-dishonesty" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:415 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Writing a recommendation letter for a student I reported for academic dishonesty
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-space" title="Space Exploration Stack Exchange"></div><a href="http://space.stackexchange.com/questions/19498/using-ozone-as-oxidizer" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:508 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Using ozone as oxidizer
+                </a>
+
+            </li>
+            <li class="dno js-hidden">
+                <div class="favicon favicon-italian" title="Italian Language Stack Exchange"></div><a href="http://italian.stackexchange.com/questions/7775/to-make-a-big-deal" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:524 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    To make a big deal
+                </a>
+
+            </li>
+    </ul>
+
+        <a href="#" class="show-more js-show-more js-gps-track" data-gps-track="posts_hot_network.click({ item_type:3, location:11 })">
+            more hot questions
+        </a>
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="https://codereview.stackexchange.com/feeds/question/74609" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	<script>
+StackExchange.ready(function(){$.get('/posts/74609/ivc/f8e8');});
+</script>
+<noscript>
+    <div><img src="/posts/74609/ivc/f8e8" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-cpp</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">            
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="https://codereview.stackexchange.com/tour">tour</a>
+                    <a href="https://codereview.stackexchange.com/help">help</a>
+                    <a href="http://stackoverflow.blog/?blb=1">blog</a>
+                        <a href="http://chat.stackexchange.com/?tab=site&amp;host=codereview.stackexchange.com">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="https://codereview.stackexchange.com/contact">contact us</a></b>
+                        <b><a href="http://meta.codereview.stackexchange.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="4">
+                Technology
+            </th>
+            <th colspan="2">
+                Life / Arts
+            </th>
+            <th colspan="2">
+                Culture / Recreation
+            </th>
+            <th colspan="2">
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="https://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="https://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="https://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="https://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="https://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="https://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="https://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="https://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://softwareengineering.stackexchange.com/" title="professionals, academics, and students working within the systems development life cycle who care about creating, delivering, and maintaining software responsibly">Software Engineering</a></li>
+                        <li><a href="https://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="https://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="https://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="https://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="https://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="https://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="https://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="https://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="https://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="https://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="https://mathematica.stackexchange.com/" title="users of Wolfram Mathematica">Mathematica</a></li>
+                        <li><a href="https://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="https://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                        <li><a href="https://crypto.stackexchange.com/" title="software developers, mathematicians and others interested in cryptography">Cryptography</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://codereview.stackexchange.com/" title="peer programmer code reviews">Code Review</a></li>
+                        <li><a href="https://magento.stackexchange.com/" title="users of the Magento e-Commerce platform">Magento</a></li>
+                        <li><a href="https://dsp.stackexchange.com/" title="practitioners of the art and science of signal, image and video processing">Signal Processing</a></li>
+                        <li><a href="https://raspberrypi.stackexchange.com/" title="users and developers of hardware and software for Raspberry Pi">Raspberry Pi</a></li>
+                        <li><a href="https://codegolf.stackexchange.com/" title="programming puzzle enthusiasts and code golfers">Programming Puzzles &amp; Code Golf</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (7)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="https://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="https://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="https://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="https://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="https://music.stackexchange.com/" title="musicians, students, and enthusiasts">Music: Practice &amp; Theory</a></li>
+                        <li><a href="https://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="https://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="https://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (8)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="https://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="https://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="https://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="https://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="https://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="https://ell.stackexchange.com/" title="speakers of other languages learning English">English Language Learners</a></li>
+                        <li><a href="https://japanese.stackexchange.com/" title="students, teachers, and linguists wanting to discuss the finer points of the Japanese language">Japanese Language</a></li>
+                        <li><a href="https://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="https://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                        <li><a href="https://anime.stackexchange.com/" title="anime and manga fans">Anime &amp; Manga</a></li>
+                        <li><a href="https://mechanics.stackexchange.com/" title="mechanics and DIY enthusiast owners of cars, trucks, and motorcycles">Motor Vehicle Maintenance &amp; Repair</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (17)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="https://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="https://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="https://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="https://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="https://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="https://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="https://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                        <li><a href="https://cs.stackexchange.com/" title="students, researchers and practitioners of computer science">Computer Science</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="https://philosophy.stackexchange.com/" title="those interested in the study of the fundamental nature of knowledge, reality, and existence">Philosophy</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (3)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="https://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="https://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="https://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="https://www.stackoverflowbusiness.com/talent">Stack Overflow Talent</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2016 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2016.12.20.1
+            </div>
+                </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Code Review Stack Exchange works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+<script>var p = "http", d = "static"; if (document.location.protocol == "https:") { p += "s"; d = "engine"; } var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = p + "://" + d + ".adzerk.net/ados.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script>
+<script>
+    var ados = ados || {};
+    ados.run = ados.run || [];
+    
+    
+        
+        ados.run.push(function () {
+                setTimeout(function () { $("#adzerk-user-match").remove(); }, window.AUMIframeDone ? 0 : 2000);
+                ados_setKeywords('c%2b%2b,linked-list,iterator,x-host-codereview.stackexchange.com');; ados_load();
+        });   
+        
+</script>
+
+    <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            
+                ga('create', 'UA-5620270-24', {'cookieDomain': 'stackexchange.com'});
+                ga('set', 'dimension2', '|c++|linked-list|iterator|');             ga('send', 'pageview');
+
+        var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+        (function () {
+            var ssl='https:'==document.location.protocol,
+                s=document.getElementsByTagName('script')[0],
+                qc=document.createElement('script');
+                qc.async = true;
+                qc.src = (ssl ? 'https://secure' : 'http://edge') + '.quantserve.com/quant.js';
+                s.parentNode.insertBefore(qc, s);
+                _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+                            var sc=document.createElement('script');
+                sc.async=true;
+                sc.src=(ssl?'https://sb':'http://b') + '.scorecardresearch.com/beacon.js';
+                s.parentNode.insertBefore(sc, s);
+                _comscore.push({ c1: "2", c2: "17440561" });
+        })();
+
+    </script>
+        
+    
+            <script type="text/javascript">
+                
+                (function(appendChild) {
+                    Node.prototype.appendChild = function() {
+                        var parent = this;
+                        var newNode = arguments[0];
+                        if (parent.nodeName === 'HEAD'
+                            && newNode
+                            && newNode.nodeName === 'SCRIPT'
+                            && newNode.src) {
+                            
+                            window.setTimeout(function() {
+                                var result = newNode.src.match(/^https:\/\/maps\.googleapis\.com\/maps\/api\/place\/js\/(\w+)Service\./i) || [];
+                                var service = result[1];
+                                if (service) {
+                                    if (service === 'Autocompletion') service =  2;
+                                    else if (service === 'Place') service = 1;
+                                    else service = 0;
+                                    StackExchange.using('gps', function() {
+                                        StackExchange.gps.track('google_maps_places_api.call', { service: service });
+                                    });
+                                }
+                            }, 0);
+                        }
+                        return appendChild.apply(this, arguments);
+                    };
+                })(Node.prototype.appendChild);
+            </script>
+    
+</body></html>

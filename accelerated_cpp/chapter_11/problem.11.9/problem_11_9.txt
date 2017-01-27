@@ -1,0 +1,20 @@
+Problem 11-9
+
+Question:
+
+The grow() function in 11.5.1/pg.208 doubles the amount of memory each time it needs more.  Estimate the efficiency gains of this strategy.  Once you've predicted how much of a difference it makes, change the grow() function appropriately and measure the difference.
+
+Answer:
+
+Compile and run the solution from Problem 11-5 (the instrumented Student_info) and you can observe when reallocation occurs.  std::vector reallocates on powers of two which can be seen in the pattern of the calls to the copy constructor and the destructor.
+
+An explanation of this is available here:
+http://www.sgi.com/tech/stl/FAQ.html
+http://www.sgi.com/tech/stl/Vector.html#2
+http://www.drdobbs.com/c-made-easier-how-vectors-grow/184401375
+
+Why does a vector expand its storage by a factor of two when it performs a reallocation?
+
+Expanding a vector by a factor of two is a time-space tradeoff; it means that each element will (on average) be copied twice when you're building a vector one element at a time, and that the ratio of wasted to used space is at most 1. (In general, if the exponent for expansion is r, the worst case wasted/used ratio is r - 1 and the number of times an element is copied approaches r/(r - 1). If r = 1.25, for example, then elements are copied five times instead of twice.)
+
+If you need to control vector's memory usage more finely, you can use the member functions capacity() and reserve() instead of relying on automatic reallocation. 

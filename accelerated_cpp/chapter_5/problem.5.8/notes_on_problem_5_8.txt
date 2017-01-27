@@ -1,0 +1,29 @@
+Accelerated C++, Chapter 5, Problem 8
+
+Question:
+In the hcat function from 5.8.3/95, what would happen if we defined s outside the scope of the while?  Rewrite and execute the program to confirm your hypothesis.
+
+
+
+Answer:
+Defining s INSIDE the while loop means that s is given the default initialisation, s = "", on each iteration.  If s is defined outside the scope of the while loop (before the while loop) it won't be reset to the empty string at the beginning of each iteration, meaning that s still has the value of the previous line.  What happens depends on which picture has more lines - left or right.
+
+
+
+If you test this, you'll find the behaviour depends on which picture has more lines - left or right.
+
+If the left picture has more lines then on each iteration of the loop the string s will be assigned the value of the current line of the left picture.  Then it will concatenate a spacing string to pad the line of the left picture, and it will concatenate the current line of the right picture (or nothing if it's reached the end of the right picture).  Everything proceeds as normal.
+
+If the right picture has more lines then everything will proceed as normal until the lines from the left picture are all used.  At that point, there is no current line for the left picture to assign to s so s retains its previous value (the entire hcat string of the previous iteration).  Next it will attempt to create a padding string of negative length which throws a std::length_error.
+
+This occurs because in:
+s += string(width1 - s.size(), ' ');
+
+width1 - s.size() will result in a negative number (except if the previous, current, and remaining lines of the right picture are the empty string).
+
+width1   = the size of the longest line in the left picture (plus one).
+s.size() = width1 + right[j-1].size()
+
+s is guaranteed to be larger than width1 except if the previous, current, and remaining lines of the right picture are the empty string.
+
+In the case that the previous, current, and remaining lines of the right picture are the empty string then the spacing string will be of size zero and no error occurs.  Note that all remaining lines of the hcat picture will be identical in this case (because there's no spacing to append and the right line is empty so s will be appended unchanged).

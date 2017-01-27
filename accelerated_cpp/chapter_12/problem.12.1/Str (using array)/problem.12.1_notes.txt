@@ -1,0 +1,13 @@
+
+
+Using an array to manage the storage (versus using vector) generally made the Str class more tedious to implement.
+
+As implemented, using the array (versus using Vec) resulted in a Str container that used less storage but in turn was forced to reallocate every time the size of the Str was increased.  
+
+With the Str class using the array, only enough space was allocated for the character elements in the Str and it grew one character at a time.  Each time the Str grew it was forced to reallocate.
+
+With the Str class using the Vec to manage memory, the space allocated doubled on each reallocation (which can represent a significant amount of extra space allocated given a large enough Str) but it wasn't necessary to reallocate every time the Str grew.  This makes the version of Str with memory managed by Vec much faster to use.  This is a time-memory tradeoff for performance.
+
+The performance of the Str using array to contain its data could be increased by preallocating some space in a manner similar to the strategy of Vec.  However, this wasn't done in this implementation.
+
+Switching to an array to contain the data rather than a Vec meant that it was necessary to write a copy constructor, assignment operator, and destructor, along with several utility functions in order to manage memory.  By using Vec as the underlying storage container of Str we benefit from the memory management of the data performed by Vec.

@@ -1,0 +1,8 @@
+Accelerated C++, Chapter 8, Problem 5, xref notes
+
+You can't use a plain ostream_iterator to print a map<string, vector<int> > to standard output.  You need to write an adapter class that extends std::iterator, and then print in the assignment operator.
+
+I used the code (modified slightly) in listing 5 here:
+http://www.drdobbs.com/cpp/an-enhanced-ostreamiterator/201200278
+
+IMO this is beyond the scope of Chapter 8

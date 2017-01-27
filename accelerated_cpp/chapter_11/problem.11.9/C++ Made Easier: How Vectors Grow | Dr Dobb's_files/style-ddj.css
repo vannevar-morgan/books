@@ -1,0 +1,189 @@
+#container{
+	width:1000px;
+	margin:0 auto;
+}
+
+#footergrey {
+	max-width:100%;
+	background-color:#e5e5e7;
+	min-height:9.25em;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:0.916666em;
+	text-align:left;
+	padding-top: 5px;
+	float: left;
+	width: 100%;
+}
+div#rightlinks ul {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    float: left;
+}
+div#left {
+    float: left;
+}
+div#rightlinks ul li, div#rightlinks ul li a {
+    font-size: 11px;
+    text-decoration: none;
+    color: #000000;
+}
+div#rightlinks a:hover {
+    font-size: 11px;
+    text-decoration: underline;
+    color: #000000;
+}
+div#rightlinks ul li.footer_title {
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+div#top {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid white;
+}
+div#top {
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid white;
+}
+#bottom div#bottom ul {
+    float: right;
+}
+#bottom div#bottom ul {
+    list-style-type: none;
+    margin: 0px;
+	padding: 20px;
+}
+#bottom div#bottom ul li {
+    float: left;
+}
+#bottom div#bottom {
+    float: left;
+    width: 100%;
+}
+#bottom div#bottom ul li, #bottom div#bottom ul li a {
+    text-decoration: none;
+    font-size: 11px;
+}
+#bottom div#bottom ul li a{
+	color:#005599;
+}
+#bottom div#bottom ul li a:hover{
+	text-decoration: underline;
+}
+#bottom div#bottom ul li a:after {
+    content: "|";
+    color: black;
+    padding: 0px 5px;
+    position: relative;
+    top: -1px;
+}
+div#top div#rightlinks ul.first-list {
+    border-left: 1px solid #cccccc;
+    margin-top: 0px;
+}
+div#rightlinks ul {
+	padding:0px 20px;
+}
+div#rightlinks {
+    float: left;
+}
+div#top {
+    max-height: 133px;
+    padding: 10px 0px;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+div#rightlinks ul li {
+    line-height: 15px;
+}
+div#rightlinks div {
+    float: left;
+}
+div#top div#rightlinks ul {
+    margin-top: 20px;
+}
+
+@media only screen and (max-width: 63.6875em) and (min-width: 48em){
+    #container{
+        width:100%;
+    }
+    div#top{
+        max-height:100%;
+    }
+    div#top div#rightlinks ul.first-list{
+        border-left:0px;
+    }
+    div#tech-brands ul{
+        width:35%;
+    }
+    div#rightlinks{
+        width:86%;
+        border-left:1px solid #cccccc;
+    }
+    div#rightlinks div {
+        display:block;
+        width:100%;
+        margin:10px 0px;
+    }
+}
+
+@media only screen and (max-width: 47.999em) and (min-width: 29.9375em){
+	#container{
+        width:100%;
+    }
+    div#top{
+        max-height:100%;
+    }
+    div#top div#rightlinks ul.first-list{
+        border-left:0px;
+    }
+    div#tech-brands ul{
+        width:35%;
+    }
+    div#rightlinks{
+        width:81%;
+        border-left:1px solid #cccccc;
+    }
+    div#rightlinks div {
+        display:block;
+        width:100%;
+        margin:10px 0px;
+    }
+}
+
+@media only screen and (max-width: 29.875em) and (min-width: 20em){
+    #container{
+        width:100%;
+    }
+    div#left {
+        width: 100%;
+        text-align: center;
+    }
+    div#top{
+        max-height:100%;
+    }
+    div#top div#rightlinks ul.first-list{
+        border-left:0px;
+    }
+    div#tech-brands ul{
+        width:35%;
+    }
+    div#rightlinks{
+        width:86%;
+        border-left:1px solid #cccccc;
+    }
+    div#rightlinks div {
+        display:block;
+        width:100%;
+        margin:10px 0px;
+    }
+    #bottom div#bottom ul li{
+        line-height:20px;
+    }
+    #bottom div#bottom ul{
+        padding:12px 10px;
+    }
+}

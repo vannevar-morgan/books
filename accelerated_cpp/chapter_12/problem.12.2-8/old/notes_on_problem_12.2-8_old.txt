@@ -1,0 +1,18 @@
+This is the old version of the Str implementation.
+
+This version of Str isn't compliant with C++11 because the Str is not always null terminated.  Strings in C++11 are always null terminated.
+
+The alternative implementation uses always null terminated strings which makes c_str() trivial to implement (return pointer to the underlying data).  By having always null terminated strings this avoids the need for a const_cast on a const object (for c_str()) which should be avoided as per:
+
+blog.aaronballman.com/2011/06/when-should-you-use-const_cast/
+
+This version will also produce an error when accessing the zeroeth element of an empty string.
+
+// Fine, no error, is null terminated always.
+String a;
+cout << a[0] << endl;
+
+
+// Error, no memory is allocated and the Str is not null terminated, there is no zeroeth element to access.
+Str a;
+cout << a[0] << endl;

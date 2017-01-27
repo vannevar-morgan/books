@@ -1,0 +1,1 @@
+The shortest valid c++ program would be just an empty main function, such as valid.cpp

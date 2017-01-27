@@ -1,0 +1,6 @@
+What does the following statement do?
+
+3 + 4;
+
+
+Adds 3 and 4, discards the result.

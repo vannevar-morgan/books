@@ -1,0 +1,8 @@
+Problem 9-2:
+
+If we define the "name" function as a plain, nonconst member function, what other functions in our system must change and why?
+
+Answer:
+
+The "compare" function must be changed to accept nonconst Student_info objects because it uses the "name" function to compare two Student_info objects.  If "name" is nonconst then compare will fail at compile time due to calling a nonconst member function on a const object.
+

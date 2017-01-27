@@ -1,0 +1,42 @@
+Accelerated C++, Chapter 8, Problem 8
+
+Question:
+In the binary_search function in 8.2.6/148, why didn't we write (begin + end) / 2 instead of the more complicated begin + (end - begin) / 2?
+
+
+
+Short Answer:
+(end - begin) / 2 represents the size of half the range, which we can then add to the random access iterator begin to obtain an iterator to the middle of the range.
+(begin + end) (or, addition of iterators) isn't an operation supported by iterators or pointer types.
+
+
+
+Longer Answer:
+Iterators do not support operator+(iterator i){}.  That is, you can't add one iterator to another.  operator-(iterator i){} is defined and yields a type of Iterator::difference_type (ptrdiff_t)
+
+Even if you could add iterators, and interpreting (begin + end) to yield the size of the range [begin, end), (begin + end) / 2 would not yield a value of type iterator, that is, if:
+
+template <class Ran, class X>
+bool binary_search(Ran begin, Ran end, const X& x){
+  while(begin < end){
+    // find the midpoint of the range
+    Ran mid = (begin + end) / 2;
+.
+.
+.
+
+and the summation of iterators is interpreted to yield an appropriate size_type,
+mid = (begin + end) / 2
+
+is not of type Ran.
+
+
+Whereas for:
+Ran mid = begin + (end - begin) / 2;
+
+operator-(iterator i){} is defined and yields a type of Iterator::difference_type (ptrdiff_t)
+
+and arithmetic + and - are supported between an iterator and an integer value (or, ptrdiff_t).
+Therefore,
+mid = begin + (end - begin) / 2;
+is a valid expresion yields a value of type Ran.

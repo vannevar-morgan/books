@@ -1,0 +1,52 @@
+Problem 11-1
+
+Question:
+
+The Student_info structure that we defined in Chapter 9 did not define a copy constructor, assignment operator, or destructor.  Why not?
+
+Answer:
+
+The Student_info structure defined in Chapter 9 does not allocate resources in the default constructor.  Therefore the synthesized operations defined by the compiler for the copy constructor, assignment operator, and destructor are sufficient for the Student_info structure.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Problem 11-2
+
+Question:
+
+That structure did define a default constructor.  Why?
+
+Answer:
+
+It is important to ensure that all data members of an object are properly initialized.  The default constructor was necessary to initialize the midterm and final values to zero when an object of type Student_info is created.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Problem 11-3
+
+Question:
+
+What does the synthesized assignment operator for Student_info objects do?
+
+Answer:
+
+The synthesized assignment operator for Student_info objects performs these operations:
+	- checks for self assignment{
+		- n = rhs.n
+		- midterm = rhs.midterm
+		- final = rhs.final
+		- homework = rhs.homework
+	- return *this
+Because these operations are defined recursively, it means the synthesized assignment operator will also call the assignment operator for std::string, double, and std::vector.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Problem 11-4
+
+Question:
+
+How many members does the synthesized Student_info destructor destroy?
+
+Answer:
+
+The synthesized destructor for Student_info destroys no members directly but it invokes the destructors for both the std::string n and the std::vector<double> homework.

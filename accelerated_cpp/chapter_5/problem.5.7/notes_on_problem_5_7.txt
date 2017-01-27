@@ -1,0 +1,68 @@
+Accelerated C++, Chapter 5, Problem 7
+
+Question:
+Given the implementation of frame in 5.8.1/93, and the following code fragment:
+vector<string> v;
+frame(v);
+
+describe what happens in this call.  In particular, trace through how both the width function and the frame function operate.  Now, run this code.  If the results differ from your expectations, first understand why your expectations and the program differ, and then change one to match the other.
+
+
+
+Answer:
+We attempt to frame an empty character picture.
+
+When we call frame(v), frame(v) calls width(v) to determine the maximum width of the character picture (the length of the longest string in the character picture vector, v).  Because v is an empty vector, width(v) returns 0.  This means the border will be the string "****" and no interior rows will be added.  The final picture will return as:
+("****"
+ "****")
+
+If you run ONLY the code from the problem statement with no modifications, and then print v you will see nothing because v is still the empty vector.  We know this because frame(v) takes a reference to constant vector<string>.
+vector<string> frame(const vector<string>& v)
+
+I think the problem is meant to be run as:
+vector<string> v;
+v = frame(v);
+
+so that's how I've coded it.  If you run this code and print v you will see the character picture:
+****
+****
+
+
+
+string::size_type width(const vector<string>& v)
+{
+  //
+  // Return the length of the longest string in v.
+  //
+  string::size_type maxlen = 0;
+  for(vector<string>::size_type i = 0; i != v.size(); ++i){
+    // Because v is empty, i == v.size(), loop exits.
+    maxlen = max(maxlen, v[i].size());
+  }
+  return maxlen;                        // maxlen == 0
+}
+
+
+vector<string> frame(const vector<string>& v)
+{
+  //
+  // Frame the text picture with an asterisk border.
+  //
+  vector<string> ret;
+  string::size_type maxlen = width(v);  // This sets maxlen = 0 in frame(v).
+  string border(maxlen + 4, '*');       // This creates a border string of "****" because maxlen = 0
+  
+  // write the top border
+  ret.push_back(border);                // Executes normally.
+  
+  // write each interior row, bordered by an asterisk and a space
+  for(vector<string>::size_type i = 0; i != v.size(); ++i){
+    // Because v is empty, i == v.size(), loop exits.  No interior rows are pushed back.
+    ret.push_back("* " + v[i] + string(maxlen - v[i].size(), ' ') + " *");
+  }
+  
+  // write the bottom border
+  ret.push_back(border);                // Executes normally.
+  return ret;                           // Returns the character picture ("****"
+}                                                                         "****")
+

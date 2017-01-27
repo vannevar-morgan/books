@@ -1,0 +1,7 @@
+Problem 9-7:
+
+The "read_hw" function 4.1.3/57 solves a general problem (reading a sequence of values into a vector) even though its name suggests that it should be part of the implementation of Student_info.  Of course, we could change its name - but suppose, instead, that you wanted to integrate it with the rest of the Student_info code, in order to clarify that it was not intended for public access despite its apparent generality?  How would you do so?
+
+Answer:
+
+Make the "read_hw" function a private member function of Student_info.  Making it a private member function would prevent public access and make clear that it's intended to be used only by Student_info objects, while still allowing any Student_info objects to call the function internally.

@@ -1,0 +1,44 @@
+Core* p1 = new Core; // calls Core::Core()
+Core* p2 = new Grad; // calls Grad::Grad() which invokes Core::Core() (remember base class portion is constructed first, Core::Core() will run before the body of Grad::Grad())
+Core s1; // calls Core::Core()
+Grad s2; // calls Grad::Grad() which invokes Core::Core() (remember base class portion is constructed first, Core::Core() will run before the body of Grad::Grad())
+
+p1->grade(); // calls Core::grade()
+p1->name(); // calls Core::name()
+
+p2->grade(); // calls Grad::grade() which invokes Core::grade()
+p2->name(); // calls Core::name()
+
+s1.grade(); // calls Core::grade()
+s1.name(); // calls Core::name()
+
+s2.name(); // calls Core::name()
+s2.grade(); // calls Grad::grade() which invokes Core::grade()
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+OUTPUT PREDICTIONS:
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Core::Core()
+
+Core::Core()
+Grad::Grad()
+
+Core::Core()
+
+Core::Core()
+Grad::Grad()
+~~~~~
+Core::grade()
+Core::name()
+
+Grad::grade()
+Core::grade()
+Core::name()
+
+Core::grade()
+Core::name()
+
+Core::name()
+Grad::grade()
+Core::grade()

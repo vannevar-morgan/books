@@ -1,0 +1,37 @@
+Problem 12.15, page 226
+
+Question:
+
+The "read_hw" function from Section 4.1.3, page 57, checked the stream from which it read to determine whether the function had hit end-of-file, or had encountered an invalid input.  Our Str input operator does no such check.  Why?  Will it leave the stream in an invalid state?
+
+Answer:
+
+Our Str operator does perform this check.  In the "read_hw" function of page 57, the stream was checked prior to reading:
+
+istream& read_hw(istream& in, vector<double>& hw)
+{
+  if(in){
+    ...
+  }
+  return in;
+}
+
+
+Our Str operator performs this same check implicitly:
+
+std::istream& operator>> (std::istream& is, Str& s)
+{
+  ...
+  while(is.get(c) && isspace(c)){}
+
+  if(is){
+    ...
+    if(is){
+      is.unget();
+    }
+  }
+  return is;
+}
+
+
+std::istream::get() returns *this (the istream itself) which can be cast to boolean.  If the stream is in a valid state it returns true.  If in a failed state it returns false.  It leaves the stream in a valid state because it does not attempt to read from the stream except if it is in a valid state.  If it encounters EOF then it returns the stream unaltered (still at EOF) to signify EOF.

@@ -1,0 +1,19 @@
+Accelerated C++, Problem 16.1:
+"Write a self-reproducing program.  Such a program is one 
+ that does no input, and that, when run, writes a copy of
+ its own source text on the standard output stream."
+
+(What the problem is describing is a quine)
+https://en.wikipedia.org/wiki/Quine_(computing)
+
+A good resource for getting started:
+http://www.madore.org/~david/computers/quine.html
+
+Note that when running this program you should redirect output to a file:
+ex:
+./problem.16.1 > output.cpp
+
+then compare differences between source and output:
+diff problem.16.1.cpp output.cpp
+
+For the quine to be correct there should be no differences between source and output.

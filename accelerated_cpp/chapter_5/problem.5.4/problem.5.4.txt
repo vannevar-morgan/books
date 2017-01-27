@@ -1,0 +1,7 @@
+Accelerated C++, Chapter 5, Problem 4
+
+Question:
+Look again at the driver functions you wrote in the previous exercise. Note that it is possible to write a driver that differs only in the declaration of the type for the data structure that holds the input file. If your vector and list test drivers differ in any other way, rewrite them so that they differ only in this declaration.
+
+Answer:
+As written, the solution for 5.3 already does this.  I think this problem is suggesting that some readers would solve 5.3 by doing a typedef in the driver function and either have overloaded extract_fails() (so there's a serparate version for list and a version for vector), or have separate programs that differ in the extract_fails() function they use.  It's hinting at template functions which are introduced in Chapter 8.

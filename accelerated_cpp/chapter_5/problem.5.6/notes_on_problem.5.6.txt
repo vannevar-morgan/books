@@ -1,0 +1,24 @@
+Accelerated C++, Chapter 5, Problem 6
+
+Question:
+Rewrite the "extract_fails()" function from 5.1.1/77 so that instead of erasing each failing student from the input vector "students", it copies the records for the passing students to the beginning of "students", and then uses the resize function to remove the extra elements from the end of "students". How does the performance of this version compare with the one in 5.1.1/77?
+
+
+
+Answer:
+The performance (measured in time to extract failing students) is improved by many orders of magnitude when the data structure used is the vector.
+
+When the data structure used is the list, the time to extract failing students increased by about 20%.
+
+List data structures have (generally) very fast insertion and deletion.  So using erase() did not represent a penalty for the list (it's simple remapping of pointers between nodes in the list).  Whereas for the vector, erase() is generally an inefficient operation because any elements after the elements erased must be relocated forward.
+
+
+Sample test:
+(testing with 10,000 student records)
+for erase:
+time to extract failing students using list: 0.015257
+time to extract failing students using vector: 10.1823
+
+for resize:
+time to extract failing students using list: 0.018283
+time to extract failing students using vector: 0.016411

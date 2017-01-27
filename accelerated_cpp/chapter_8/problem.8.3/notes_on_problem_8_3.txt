@@ -1,0 +1,17 @@
+Accelerated C++, Chapter 8, Problem 3
+
+Note that with C++11 onwards, move semantics are changed, there's less expense to passing by value.  Since the make file compiles with the -std=c++1y flag, you shouldn't notice much of a difference in time between the template function that passes by value and the template function that operates on iterators.
+
+Testing, I got:
+
+100,000 element dataset
+pass by value:    49 ms, 50 ms, 49 ms
+using iterators:  48 ms, 48 ms, 48 ms
+
+1,000,000 element dataset
+pass by value:    581 ms, 577 ms, 580 ms
+using iterators:  570 ms, 575 ms, 569 ms
+
+10,000,000 element dataset
+pass by value:    6772 ms, 6781 ms, 6795 ms
+using iterators:  6700 ms, 6814 ms, 6763 ms

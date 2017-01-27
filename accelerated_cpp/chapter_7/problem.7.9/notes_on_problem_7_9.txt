@@ -1,0 +1,24 @@
+Accelerated C++, Chapter 7, Problem 9
+
+This problem says it's difficult but all you're really doing is expanding the buckets you have compared to the original nrand() implementation.
+
+For n > RAND_MAX, you have floor(n / RAND_MAX) cases where you can return rand(n) because bucket_size = 1 for n = RAND_MAX, and 1 case where you calculate the bucket_size for the remaining_n, rem_n < n.
+
+Sum the random values for each case (you can do the set in a loop) and return the sum as the final value.
+
+To test this problem, in nrand.cpp I defined TEST_RAND_MAX = 32767 because RAND_MAX is implementation defined.  Because rand() returns a random integer in the range [0, RAND_MAX], I also had to write a function to return a random integer in the range [0, TEST_RAND_MAX].
+
+int test_rand(int n){
+  // return rand() % (n + 1);
+  return ((double)(n + 1)*rand()/(RAND_MAX + 1.0));
+  // see https://groups.google.com/forum/#!topic/gnu.gcc/U3QXY9GW_LU
+}
+
+You can test with rand() and rand_max if you rename the values in nrand().
+
+Note that when testing it can be helpful to redirect output to a file.
+./test_7_9 > output_data.txt
+
+Note that with a low value of TEST_RAND_MAX you may have problems with randomness.
+
+As is, I'm pretty sure the (pseudo)randomness should be good for all values of n.  The driver program calculates the mean over 50,000 values in the range [0, 1000001), expected mean is 500,000.  Histogram plots of the frequency distribution also show a trending uniform distribution.  Both suggest the randomness works well for all values of n.

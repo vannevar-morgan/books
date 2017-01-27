@@ -1,0 +1,13 @@
+Making a Core object with default constructor...
+Core::Core()
+
+Making a Core object with istream& constructor...
+Core::Core(std::istream& is)
+
+Making a Grad object with default constructor...
+Core::Core()
+Grad::Grad()
+
+Making a Grad object with istream& constructor...
+Core::Core()
+Grad::Grad(std::istream& is)

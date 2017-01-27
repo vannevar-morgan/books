@@ -1,0 +1,28 @@
+Problem 12.9 page 226
+
+Question:
+Use class ostream_iterator to reimplement the Str output operator.  Why didn't we ask you to reimplement the input operator using class istream_iterator?
+
+Answer:
+std::istream_iterator<T> can't be used because it is an input iterator - forward read access only.  The actual read operation occurs when the istream_iterator is incremented, not when it is dereferenced.  Except for the first object, dereferencing only returns the most recently read object.  Combined with the fact that istream_iterator is an input iterator this means there's no way to peek forward to see whether the next character is a space.  Once that character is read there's no way to put it back on the stream.  This means the operator>> implemented with istream_iterator will miss the first character of every word except the first (and the first too if scanning through leading spaces).
+
+Additionally, istream_iterator by default ignores whitespace.  This means, if following the prior implementation of operator>> that worked directly with the std::istream, the entire stream will be read on the first call to operator>>.  For a block such as:
+
+vector<Str> words;
+Str a;
+while(cin >> a){
+   words.push_back(a);
+}
+
+(cin >> a) will return false because the entire stream has been read (hence we are at eos).  This means the push_back() operation will never be executed and effectively nothing will be read in.
+
+This problem can be solved by disabling the default with:
+
+#include <ios> // for std::noskipws
+std::istream& operator>> (std::istream& is, Str& s){
+  s.clear();
+  is >> std::noskipws;
+  // as before...
+}
+
+However the problem of being unable to put characters back onto the stream causing missed characters remains.  Hence, it's necessary to work directly with the std::istream.

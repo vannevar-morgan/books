@@ -1,0 +1,13 @@
+Accelerated C++, Chapter 5, Problem 5
+
+Question:
+Write a function named:
+center(const vector<string>&)
+that returns a picture in which all the lines of the original picture are padded out to their full width, and the padding is as evenly divided as possible between the left and right sides of the picture.  What are the properties of pictures for which such a function is useful?  How can you tell whether a given picture has those properties?
+
+
+
+Answer:
+The center(const vector<string>&) function centers text, padding to the length of the longest string in the vector.  It's useful for character pictures that are ragged (not all strings in the picture are of the same length).  You can check if a picture is ragged by checking if the length of each line is the same.  You don't need to do this, you can simply get the length of the longest line and pad all lines to match this length.  If all lines are the same length then no lines will be padded.
+
+Since it's a character picture, you might also consider that it won't look nicely centered if the length of any string exceeds the columns that can be output in your terminal (because the string will carry to the next line and won't be centered).  The number of columns you have available depends on your terminal.  If your type isn't monospace (probably it is) then different characters will have different widths.  You could account for this by adding more padding on lines with characters of lesser width.  I think these go beyond the scope of the problem so I haven't addressed them.

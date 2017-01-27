@@ -1,0 +1,9 @@
+Accelerated C++, Chapter 8, Problem 7
+
+Question:
+Why doesn't the max function use two template parameters, one for each argument type?
+
+
+
+Answer:
+It's implicit that the types of both arguments should be the same, and should be types for which the comparison operator (operator<) is defined (or, for which a comparison function is provided, max(a, b, comp_func)).  The max() function can only have one return type.  So it must be the same type as both arguments.

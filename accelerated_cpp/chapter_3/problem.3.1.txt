@@ -1,0 +1,47 @@
+Accelerated C++, Chapter 3, Problem 1
+
+Question:
+Suppose we wish to find the median of a collection of values. Assume that we have read some of the values so far, and that we have no idea how many values remain to be read. Prove that we cannot afford to discard any of the values that we have read.
+(Hint: One proof strategy is to assume that we can discard a value, and then find values for the unread - and therefore unknown part of our collection that would cause the median to be the value that we discarded.)
+
+
+[1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+By definition, the median value of a collection is equal to:
+1. If an odd number of elements in the collection then the median is the middle value of the sorted range.
+
+2. If an even number of elements in the collection then the median is the average of the two middle numbers of the sorted range.
+
+Note that to calculate the median we require a sorted collection.
+In order to sort a collection we must know the values of all elements of the collection.
+Therefore, we can't discard any values from a collection which must be sorted.
+Therefore, we can't discard any values when calculating the median of a range of values.
+
+As an example, consider the collection:
+
+[-24, -8, -42, 16, -50, -36, -46, -10, -2, 28]
+
+If we read this collection in sequentially from front to back, at any time we have:
+
+[-24, ...]
+[-24, -8, ...]
+[-24, -8, -42, ...]
+
+Consider that we discard the values:
+[-24, -8, -42]
+before reading in the remaining values.
+
+Then our final collection before sorting is:
+[16, -50, -36, -46, -10, -2, 28]
+
+And our sorted collection is:
+[-50, -46, -36, -10, -2, 16, 28]
+
+And our median is:
+-10
+
+But the WHOLE sorted collection is:
+[-50, -46, -42, -36, -24, -10, -8, -2, 16, 28]
+
+And the median of the whole collection is:
+(-24 + -10) / 2 = -17

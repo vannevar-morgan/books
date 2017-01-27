@@ -1,0 +1,8 @@
+Note that this isn't implemented exactly as the book suggests.
+
+Problem 15.4:
+Add an operation to reframe a Picture, which changes the frame characters.  The operation should change all of the frames in the interior picture.
+
+I think this suggests the corner, top/bottom, left/right framing characters should be identical for all character pictures (but reframe allows you to change the character for each location).  So when you call reframe(), all framed pictures which are subpictures of the picture being reframed are also reframed with the same characters.
+
+As I've implemented reframe(), there's more control at a price.  It passes a queue down through the framed pictures and each character in the queue represents a character for a location in the next lowest framed picture.  So, from the top down, you can pass specific characters for each framed picture you wish to reframe - but you need to pass characters equal to the number required for all framed pictures to that depth in the picture.
